@@ -1,0 +1,276 @@
+"""PyBlox — локализация RU/EN."""
+import os, json
+
+PROFILE_FILE = 'profile.json'
+LANG = 'ru'
+
+TEXTS = {
+    'ru': {
+        'ok': 'OK', 'cancel': 'Отмена', 'back': 'Назад', 'close': 'Закрыть',
+        'yes': 'Да', 'no': 'Нет', 'error': 'Ошибка',
+        'login': 'Войти', 'register': 'Зарегистрироваться',
+        'nickname': 'Никнейм:', 'password': 'Пароль:',
+        'fill_fields': 'Заполни все поля',
+        'player_not_found': 'Игрок не найден',
+        'wrong_password': 'Неверный пароль',
+        'nick_short': 'Ник минимум 3 символа',
+        'nick_chars': 'Только буквы, цифры, _',
+        'nick_busy': 'Ник занят',
+        'account_created': 'Аккаунт создан! Нажми "Войти"',
+        'auto_login_hint': 'После входа пароль больше не спросят',
+        'hello': 'Привет, {name}!',
+        'auto_login_on': 'Автовход активен',
+        'servers': 'Список серверов', 'create_server': 'Создать сервер',
+        'play_places': 'Играть в плейсы', 'settings': 'Настройки',
+        'logout': 'Выйти из аккаунта',
+        'places_hint': 'Плейсы создаются в PyBlox Studio',
+        'avatar_in_chat': 'Аватар (в чате)',
+        'upload': 'Загрузить', 'remove': 'Удалить', 'no_avatar': '(нет)',
+        'mic_key': 'Микрофон (P)', 'camera_key': 'Камера (O)',
+        'find': 'Найти', 'test': 'Проверить', 'status': 'Статус',
+        'screen_share_key': 'Демонстрация экрана (I)',
+        'webrtc_label': 'Использовать WebRTC (реальное время)',
+        'webrtc_unavailable': 'WebRTC недоступен: pip install aiortc av',
+        'resolution': 'Разрешение экрана:',
+        'fps_label': 'FPS:',
+        'language_label': 'Язык:',
+        'studio_section': 'PyBlox Studio',
+        'studio_hint': 'Создавай свои плейсы в отдельном приложении.',
+        'open_studio': 'Открыть PyBlox Studio',
+        'manual_connect': 'Ручное подключение',
+        'reconnect': 'Переподключиться',
+        'check_updates': 'Проверить обновления',
+        'version': 'Версия', 'no_updater': 'updater.py не найден',
+        'exit': 'Выйти', 'send': 'Отправить', 'online': 'Онлайн',
+        'joined_server': 'Ты вошёл на сервер "{name}"',
+        'mic_hint': 'P — микрофон', 'cam_hint': 'O — камера',
+        'screen_hint_webrtc': 'I — экран (WebRTC)',
+        'screen_hint_mqtt': 'I — экран (MQTT)',
+        'f11_hint': 'F11 — во весь экран',
+        'servers_title': 'Все серверы', 'refresh': 'Обновить',
+        'join': 'Войти',
+        'online_status': 'онлайн', 'offline_status': 'оффлайн',
+        'host': 'хост', 'players': 'игроков',
+        'updated_ago': 'обновлён {time} назад',
+        'my_server': '(мой)', 'no_servers': 'Пока нет серверов',
+        'create_first': 'Создай свой — он останется тут',
+        'no_network': 'Нет связи с сетью',
+        'places_title': 'Плейсы (от сообщества)',
+        'play': 'Играть', 'no_places': 'Пока нет плейсов',
+        'no_places_hint': 'Открой PyBlox Studio и опубликуй свой плейс',
+        'open_studio_short': 'Открыть Studio',
+        'room_full': 'Комната заполнена',
+        'room_full_msg': 'Плейс «{name}» полон.\nИгроков: {count}/{max}',
+        'author': 'автор', 'blocks_count': 'блоков',
+        'max_players_short': 'макс. игроков',
+        'need_ursina': 'Нужна Ursina',
+        'install_ursina_q': 'Для игры нужна Ursina.\nУстановить?',
+        'install_started': 'Установка запущена',
+        'install_started_msg': 'Откроется pip.\nПерезапусти PyBlox после.',
+        'connecting': 'Подключаюсь...', 'connecting_wait': 'жди до 20 сек',
+        'no_network_msg': 'Не удалось подключиться к брокеру',
+        'search_updates': 'Проверяю GitHub...',
+        'no_updates': 'Обновлений нет',
+        'no_updates_msg': 'У тебя последняя версия: {v}',
+        'update_available': 'Доступно обновление PyBlox',
+        'update_msg': 'Установлена: {current}\nДоступна: {new}\n\nОткрыть?',
+        'update_banner': 'Доступна версия {v} — нажми',
+        'camera_fail': 'Не удалось открыть камеру {n}.',
+        'no_cameras': 'Рабочих камер не найдено.',
+        'cameras_found': 'Найдено камер: {n}',
+        'client_only_studio': 'Не найден studio.py рядом с client.py:\n{path}',
+        's_save': '💾 Сохранить', 's_publish': '🚀 Опубликовать',
+        's_new': '🆕 Новый', 's_load': '📂 Загрузить',
+        's_mine': '📚 Мои',
+        's_tools': 'Инструменты',
+        's_select': '🖱 Выделить', 's_create': '➕ Создать',
+        's_duplicate': '📋 Копия', 's_delete': '🗑 Удалить',
+        's_properties': 'Свойства блока',
+        's_max_players': 'Макс. игроков',
+        's_color': 'Цвет R,G,B (0-255)',
+        's_spawn': 'Spawn X/Y/Z',
+        's_width': 'Ширина', 's_height': 'Высота', 's_depth': 'Глубина',
+        's_rot_x': 'Поворот X', 's_rot_y': 'Поворот Y', 's_rot_z': 'Поворот Z',
+        's_ready': 'Готово',
+        's_help': 'WASD — камера, ПКМ — вращать, ЛКМ — действие',
+        's_saved': 'Сохранено', 's_published': 'Опубликовано',
+        's_loaded': 'Загружен', 's_new_place': 'Новый плейс',
+        's_tool_now': 'Инструмент',
+        'd_title': 'Мои плейсы',
+        'd_refresh': '⟳ Обновить',
+        'd_delete_all': '🗑 Удалить все мои',
+        'd_delete': '🗑 Удалить',
+        'd_open_studio': '📂 Открыть в Studio',
+        'd_no_saves': 'Нет сохранённых плейсов',
+        'd_no_folder': 'Папка places/ не найдена',
+        'd_confirm_one': 'Удалить «{name}»?\n\nЛокальный файл: удалится.\nИз сети: {net}\n\nПродолжить?',
+        'd_net_yes': 'ДА (автор — ты)',
+        'd_net_no': 'НЕТ (чужой)',
+        'd_confirm_all': 'Найдено: {n} твоих плейсов.\nОни исчезнут у всех игроков.\n\nПродолжить?',
+        'd_deleted': 'Удалено: {n}',
+        'd_nothing': 'В places/ нет плейсов с твоим ником',
+        'd_deleting': 'Убираю из сети: {pid}...',
+        'd_remote_ok': '✅ Удалён из сети',
+        'd_remote_fail': '❌ Ошибка сети',
+        'd_confirm_title': 'Удалить плейс?',
+        'd_confirm_all_title': 'Удалить все мои?',
+        'd_found_n': 'Найдено плейсов: {n}',
+        'd_mine_tag': '(мой)', 'd_other_tag': '(чужой)',
+    },
+    'en': {
+        'ok': 'OK', 'cancel': 'Cancel', 'back': 'Back', 'close': 'Close',
+        'yes': 'Yes', 'no': 'No', 'error': 'Error',
+        'login': 'Log in', 'register': 'Register',
+        'nickname': 'Nickname:', 'password': 'Password:',
+        'fill_fields': 'Fill all fields',
+        'player_not_found': 'Player not found',
+        'wrong_password': 'Wrong password',
+        'nick_short': 'Nick must be ≥ 3 chars',
+        'nick_chars': 'Only letters, digits, _',
+        'nick_busy': 'Nickname taken',
+        'account_created': 'Account created! Click "Log in"',
+        'auto_login_hint': 'Password won\'t be asked again',
+        'hello': 'Hi, {name}!',
+        'auto_login_on': 'Auto-login active',
+        'servers': 'Servers list', 'create_server': 'Create server',
+        'play_places': 'Play places', 'settings': 'Settings',
+        'logout': 'Log out',
+        'places_hint': 'Places are made in PyBlox Studio',
+        'avatar_in_chat': 'Avatar (in chat)',
+        'upload': 'Upload', 'remove': 'Remove', 'no_avatar': '(none)',
+        'mic_key': 'Microphone (P)', 'camera_key': 'Camera (O)',
+        'find': 'Find', 'test': 'Test', 'status': 'Status',
+        'screen_share_key': 'Screen share (I)',
+        'webrtc_label': 'Use WebRTC (real-time)',
+        'webrtc_unavailable': 'WebRTC unavailable: pip install aiortc av',
+        'resolution': 'Screen resolution:',
+        'fps_label': 'FPS:',
+        'language_label': 'Language:',
+        'studio_section': 'PyBlox Studio',
+        'studio_hint': 'Create places in a separate app.',
+        'open_studio': 'Open PyBlox Studio',
+        'manual_connect': 'Manual connect',
+        'reconnect': 'Reconnect',
+        'check_updates': 'Check for updates',
+        'version': 'Version', 'no_updater': 'updater.py not found',
+        'exit': 'Exit', 'send': 'Send', 'online': 'Online',
+        'joined_server': 'You joined "{name}"',
+        'mic_hint': 'P — microphone', 'cam_hint': 'O — camera',
+        'screen_hint_webrtc': 'I — screen (WebRTC)',
+        'screen_hint_mqtt': 'I — screen (MQTT)',
+        'f11_hint': 'F11 — fullscreen',
+        'servers_title': 'All servers', 'refresh': 'Refresh',
+        'join': 'Join',
+        'online_status': 'online', 'offline_status': 'offline',
+        'host': 'host', 'players': 'players',
+        'updated_ago': 'updated {time} ago',
+        'my_server': '(mine)', 'no_servers': 'No servers yet',
+        'create_first': 'Create yours — it will stay here',
+        'no_network': 'No network',
+        'places_title': 'Places (from community)',
+        'play': 'Play', 'no_places': 'No places yet',
+        'no_places_hint': 'Open PyBlox Studio and publish a place',
+        'open_studio_short': 'Open Studio',
+        'room_full': 'Room is full',
+        'room_full_msg': 'Place "{name}" is full.\nPlayers: {count}/{max}',
+        'author': 'author', 'blocks_count': 'blocks',
+        'max_players_short': 'max players',
+        'need_ursina': 'Ursina required',
+        'install_ursina_q': 'Ursina is needed to play. Install now?',
+        'install_started': 'Installation started',
+        'install_started_msg': 'pip will open.\nRestart PyBlox after.',
+        'connecting': 'Connecting...', 'connecting_wait': 'wait up to 20 sec',
+        'no_network_msg': 'Failed to connect to broker',
+        'search_updates': 'Checking GitHub...',
+        'no_updates': 'No updates',
+        'no_updates_msg': 'You have the latest: {v}',
+        'update_available': 'PyBlox update available',
+        'update_msg': 'Installed: {current}\nAvailable: {new}\n\nOpen?',
+        'update_banner': 'Version {v} available — click',
+        'camera_fail': 'Failed to open camera {n}.',
+        'no_cameras': 'No working cameras found.',
+        'cameras_found': 'Cameras found: {n}',
+        'client_only_studio': 'studio.py not found next to client.py:\n{path}',
+        's_save': '💾 Save', 's_publish': '🚀 Publish',
+        's_new': '🆕 New', 's_load': '📂 Load',
+        's_mine': '📚 Mine',
+        's_tools': 'Tools',
+        's_select': '🖱 Select', 's_create': '➕ Create',
+        's_duplicate': '📋 Copy', 's_delete': '🗑 Delete',
+        's_properties': 'Block properties',
+        's_max_players': 'Max players',
+        's_color': 'Color R,G,B (0-255)',
+        's_spawn': 'Spawn X/Y/Z',
+        's_width': 'Width', 's_height': 'Height', 's_depth': 'Depth',
+        's_rot_x': 'Rot X', 's_rot_y': 'Rot Y', 's_rot_z': 'Rot Z',
+        's_ready': 'Ready',
+        's_help': 'WASD — camera, RMB — rotate, LMB — action',
+        's_saved': 'Saved', 's_published': 'Published',
+        's_loaded': 'Loaded', 's_new_place': 'New place',
+        's_tool_now': 'Tool',
+        'd_title': 'My places',
+        'd_refresh': '⟳ Refresh',
+        'd_delete_all': '🗑 Delete all mine',
+        'd_delete': '🗑 Delete',
+        'd_open_studio': '📂 Open in Studio',
+        'd_no_saves': 'No saved places',
+        'd_no_folder': 'Folder places/ not found',
+        'd_confirm_one': 'Delete "{name}"?\n\nLocal file: removed.\nFrom network: {net}\n\nContinue?',
+        'd_net_yes': 'YES (author is you)',
+        'd_net_no': 'NO (foreign)',
+        'd_confirm_all': 'Found: {n} of your places.\nThey will disappear for all players.\n\nContinue?',
+        'd_deleted': 'Deleted: {n}',
+        'd_nothing': 'No places by your nick in places/',
+        'd_deleting': 'Removing from network: {pid}...',
+        'd_remote_ok': '✅ Removed from network',
+        'd_remote_fail': '❌ Network error',
+        'd_confirm_title': 'Delete place?',
+        'd_confirm_all_title': 'Delete all mine?',
+        'd_found_n': 'Places found: {n}',
+        'd_mine_tag': '(mine)', 'd_other_tag': '(foreign)',
+    },
+}
+
+
+def load_lang():
+    global LANG
+    try:
+        with open(PROFILE_FILE, 'r', encoding='utf-8') as f:
+            p = json.load(f)
+        lang = p.get('language', 'ru')
+        if lang in TEXTS:
+            LANG = lang
+    except Exception:
+        pass
+
+
+def set_lang(lang):
+    global LANG
+    if lang not in TEXTS:
+        return
+    LANG = lang
+    try:
+        prof = {}
+        if os.path.exists(PROFILE_FILE):
+            with open(PROFILE_FILE, 'r', encoding='utf-8') as f:
+                prof = json.load(f)
+        prof['language'] = lang
+        with open(PROFILE_FILE, 'w', encoding='utf-8') as f:
+            json.dump(prof, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+
+def t(key, **kw):
+    s = TEXTS.get(LANG, {}).get(key)
+    if not s:
+        s = TEXTS['ru'].get(key) or key
+    if kw:
+        try:
+            return s.format(**kw)
+        except Exception:
+            return s
+    return s
+
+
+load_lang()
